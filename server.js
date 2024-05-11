@@ -65,6 +65,27 @@ app.get("/servergettasks", async (req, res) => {
   }
 });
 
+app.post("/serverdeletetask", async (req, res) => {
+  const { taskId } = req.body;
+  console.log('Received taskId:', taskId); // Log received taskId
+
+  try {
+    console.log('Attempting to connect to the database...');
+    const client = await pool.connect();
+    console.log('Database connection successful');
+
+    const result = await client.query(
+      `DELETE FROM aufgaben WHERE id = $1`,
+      [taskId]
+    );
+    console.log('Delete query executed successfully');
+    client.release();
+    res.status(200).send("Task deleted successfully");
+  } catch (error) {
+    console.error('Error deleting task:', error.message);
+    res.status(500).send('Error deleting task'); // Send error response to client
+  }
+});
 
 const PORT = process.env.PORT ||5000;
 app.listen(PORT, () => {
