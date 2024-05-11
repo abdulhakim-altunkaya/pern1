@@ -4,12 +4,16 @@ import Write from "./components/Write";
 import Get from "./components/Get";
 import Update from "./components/Update";
 import Delete from "./components/Delete";
+import CreateTable from "./components/CreateTable";
 
 function App() {
   return (
     <Router>
       <div className="App">
         <div>
+          <br/><br/>
+          <span className="button"><Link to="/create">Create Table</Link></span>
+          <br/><br/>
           <span className="button"><Link to="/get">Get data from Server</Link></span>
           <br/><br/>
           <span className="button"><Link to="/read">Read from Database</Link></span>
@@ -23,6 +27,7 @@ function App() {
         <p>Hello dude</p>
       </div>
       <Routes>
+        <Route path="/create" element={<CreateTable />}/>
         <Route path="/get" element={<Get />}/>
         <Route path="/read" element={<Read />}/>
         <Route path="/write" element={<Write />}/>
