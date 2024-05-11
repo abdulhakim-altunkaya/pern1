@@ -31,7 +31,24 @@ app.get("/servercreatetable", async (req, res) => {
   } finally {
     client.release();
   }
-})
+});
+
+app.post("/serveraddtask", async (req, res) => {
+  const { myTask } = req.body;
+  try {
+    const client = await pool.connect();
+    const result = await client.query(
+      `INSERT INTO aufgaben (description) VALUES ($1) RETURNING *`,
+      [myTask]
+    );
+    client.release();
+    console.log("Task added successully", result.rows[0]);
+    res.status(201).send('Task added successfully');
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 
 
 const PORT = process.env.PORT ||5000;
