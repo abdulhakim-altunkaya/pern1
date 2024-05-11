@@ -50,6 +50,21 @@ app.post("/serveraddtask", async (req, res) => {
 });
 
 
+app.get("/servergettasks", async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(
+      'SELECT * FROM aufgaben'
+    );
+    client.release(); // Release the client connection
+    const dbTasks = result.rows; // Extract tasks from the query result
+    res.status(200).json(dbTasks); // Send tasks to the client
+  } catch (error) {
+    console.error('Error fetching tasks:', error.message);
+    res.status(500).send('Error fetching tasks'); // Send error response to client
+  }
+});
+
 
 const PORT = process.env.PORT ||5000;
 app.listen(PORT, () => {
